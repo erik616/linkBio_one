@@ -1,0 +1,6 @@
+npm i react-native-iphone-x-helper
+
+npm install --save react-native-vector-icons
+
+npm install @react-navigation/native
+npm install @react-navigation/stack
