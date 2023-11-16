@@ -15,7 +15,7 @@ import { Header } from '../Components/Header';
 export function AboutMe() {
     return (
         <SafeAreaView style={styles.container}>
-            <Header />
+            <Header image />
             <View style={styles.body}>
                 <Text style={styles.text}>
                     &emsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit,

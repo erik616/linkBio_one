@@ -4,3 +4,5 @@ npm install --save react-native-vector-icons
 
 npm install @react-navigation/native
 npm install @react-navigation/stack
+
+npm install react-native-email

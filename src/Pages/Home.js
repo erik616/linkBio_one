@@ -13,70 +13,95 @@ import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import Ionicons from "react-native-vector-icons/Ionicons"
 
 import { Header } from '../Components/Header';
+import { ContactModal } from '../Components/ContactModal';
+import { useState } from 'react';
 
 const WEBs = [
     {
         "name": "GitHub",
-        "logo": "github",
+        "logo": "logo-github",
         "color": "#56067F",
         "url": "https://github.com/erik616"
     },
     {
         "name": "Instagram",
-        "logo": "instagram",
+        "logo": "logo-instagram",
         "color": "#8C306C",
         "url": "https://www.instagram.com/_erik_souzaa/"
     },
     {
         "name": "Linkedin",
-        "logo": "linkedin",
+        "logo": "logo-linkedin",
         "color": "#2464E3",
         "url": "https://www.linkedin.com/in/erik-dionata-746925244/"
     },
     {
         "name": "Twitch",
-        "logo": "twitch",
+        "logo": "logo-twitch",
         "color": "#202359",
         "url": "https://www.twitch.tv/"
     },
-    {
-        "name": "WhatsApp",
-        "logo": "whatsapp",
-        "color": "#04BF20",
-        "url": "https://api.whatsapp.com/send?phone=5538991205422"
-    },
 ]
 
+const whatssap = {
+    "name": "WhatsApp",
+    "logo": "logo-whatsapp",
+    "color": "#04BF20",
+}
+
+const email = {
+    "name": "Email",
+    "logo": "mail-outline",
+    "color": "#F20530",
+}
+
 export function Home() {
+    const [visiible, setVisible] = useState(false)
+    const [app, setApp] = useState(undefined)
+
+    function handleLink( data ) {
+        console.log(data.url);
+        if (data.url) return Linking.openURL(data.url)
+
+        setVisible(!visiible)
+        setApp(data.name)
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            <Header />
+            <Header image />
             <View style={styles.body}>
                 <FlatList
                     data={WEBs}
-                    renderItem={({ item }) => <Card data={item} />}
+                    renderItem={({ item }) => <Card data={item} handleClick={() => handleLink(item)} />}
                     ItemSeparatorComponent={<View style={{ height: 10 }}></View>}
                     style={styles.list}
                 />
+                <View style={styles.footer}>
+                    <Card data={whatssap} square handleClick={() => handleLink(whatssap)} />
+                    <Card data={email} square handleClick={() => handleLink(email)} />
+                </View>
+
+                <ContactModal visible={visiible} setVisible={setVisible} contact={app} />
             </View>
         </SafeAreaView>
     );
 }
 
-function Card({ data }) {
-
-    const handleLink = () => Linking.openURL(data.url)
+function Card({ data, square, handleClick }) {
 
     return (
         <TouchableOpacity
             activeOpacity={.8}
-            style={styles.card}
-            onPress={handleLink}
+            style={[styles.card, { width: square ? 70 : "100%", justifyContent: square && "center" }]}
+            onPress={handleClick}
         >
-            <Ionicons name={`logo-${data.logo}`} size={32} color={data.color} />
-            <Text style={styles.cardTitle}>
-                {data.name}
-            </Text>
+            <Ionicons name={data.logo} size={32} color={data.color} />
+            {!square &&
+                <Text style={styles.cardTitle}>
+                    {data.name}
+                </Text>
+            }
         </TouchableOpacity>
     )
 }
@@ -86,46 +111,28 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#0D0D0D',
     },
-    header: {
-        marginTop: getStatusBarHeight() + 20,
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: "center"
-    },
-    img: {
-        height: 150,
-        width: 150,
-        borderRadius: 75
-    },
-    title: {
-        color: "#fff",
-        fontSize: 24,
-        fontWeight: "bold"
-    },
-    subTitle: {
-        color: "#fff",
-        fontSize: 18,
-        fontWeight: "700",
-        letterSpacing: 1
-    },
     body: {
         flex: 1,
         width: '100%',
         backgroundColor: "#fff",
         marginTop: 20,
-        padding: 10,
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
         alignItems: 'center',
-        paddingTop: 30
+        paddingTop: 40,
+        paddingHorizontal: 50
     },
     list: {
         width: '100%',
-        paddingHorizontal: 50
     },
-
+    footer: {
+        width: "100%",
+        position: 'relative',
+        top: -45,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
+    },
     card: {
-        width: '100%',
         borderRadius: 10,
         borderWidth: 1,
         borderBottomWidth: 4,

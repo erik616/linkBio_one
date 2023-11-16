@@ -8,17 +8,19 @@ import {
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 
-import im from "../assets/eu.jpg"
+import im from "../../assets/eu.jpg"
 
 
-export function Header() {
+export function Header({ image }) {
     return (
         <View style={styles.header}>
-            <Image
-                style={styles.img}
-                source={im}
-            />
-            <Text style={styles.title}>Erik Dionata</Text>
+            {image &&
+                <Image
+                    style={styles.img}
+                    source={im}
+                />
+            }
+            <Text style={[styles.title, image ? null : {marginTop: -10}]}>Erik Dionata</Text>
             <Text style={styles.subTitle}>&lt;Desenvolvedor /&gt;</Text>
         </View>
     );
